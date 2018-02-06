@@ -12,12 +12,12 @@ Container is based on latest Alpine Linux and uses cURL to carry out the operati
 
 Configuration is done via environment variables.
 
-ZONE_IDENTIFIER - Check it on domain overview page on CloudFlare
-DNS_RECORD - You can find it via CloudFlare API - https://api.cloudflare.com/#dns-records-for-a-zone-list-dns-records
-AUTH_EMAIL - Your CloudFlare email
-AUTH_TOKEN - Your CloudFlare authentication token
-DOMAIN - Domain which A record you want to update
-PROXIED - Whether to proxy through CloudFlare or not (true/false)
+ZONE_IDENTIFIER - Check it on domain overview page on CloudFlare  
+DNS_RECORD - You can find it via CloudFlare API - https://api.cloudflare.com/#dns-records-for-a-zone-list-dns-records  
+AUTH_EMAIL - Your CloudFlare email  
+AUTH_TOKEN - Your CloudFlare authentication token  
+DOMAIN - Domain which A record you want to update  
+PROXIED - Whether to proxy through CloudFlare or not (true/false)  
 
 Example:
 ```
