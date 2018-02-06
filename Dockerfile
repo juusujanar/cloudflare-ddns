@@ -21,7 +21,4 @@ RUN /usr/bin/crontab /crontab.txt
 # Install curl
 RUN apk update && apk add curl
 
-# Run the script for the first time also
-RUN /cloudflare-ddns.sh
-
 CMD ["/entrypoint.sh"]
