@@ -10,6 +10,8 @@ TTL is set to 1 hour.
 
 Container is based on Alpine Linux 3.8 and uses cURL to carry out the requests.
 
+Latest image (janarj/cloudflare-ddns:latest) may contain test versions. Use versioned image for stability (janarj/cloudflare-ddns:1.1)
+
 
 ### Finding CloudFlare identifiers and DNS records
 
@@ -31,12 +33,12 @@ Configuration is done via environment variables.
 
 ZONE_IDENTIFIER - Check it on domain overview page on CloudFlare  
 DNS_RECORD - You can find it via CloudFlare API - https://api.cloudflare.com/#dns-records-for-a-zone-list-dns-records  
-IPv6_DNS_RECORD - Same as above, needed if you want to update AAAA records.
+IPv6_DNS_RECORD - Same as above, needed if you want to update AAAA records.  
 AUTH_EMAIL - Your CloudFlare email  
 AUTH_TOKEN - Your CloudFlare API token  
-DOMAIN - Domain which A/AAAA record(s) you want to update.
+DOMAIN - Domain which A/AAAA record(s) you want to update.  
 PROXIED - Whether to proxy through CloudFlare or not (true/false)  
-IPv6 - Turn off IPv6 checking. true/false, defaults to true.
+IPv6 - Turn off IPv6 checking. true/false, defaults to true.  
 
 Example:
 ```
@@ -48,7 +50,7 @@ Example:
   -e "DOMAIN=example.com" \
   -e "IPv6=true" \
   -e "IPv6_DNS_RECORD=someothertoken1938175" \
-  -e "PROXIED=true" janarj/cloudflare-ddns
+  -e "PROXIED=true" janarj/cloudflare-ddns:1.1
 ```
 
 ## License
