@@ -1,24 +1,12 @@
-##################################################
-# 
-# Bash script that is ran every hour to update the
-# DNS A record for your domain in CloudFlare
-# Can be customized according to Cloudflare API
-#
-##################################################
-
-FROM alpine:latest
-MAINTAINER Janar Juusu <janar.juusu@gmail.com>
+FROM alpine:3.8
+LABEL maintainer="janar@juusujanar.eu"
 
 # Add necessary files to the container
-ADD cloudflare-ddns.sh /cloudflare-ddns.sh
-ADD crontab.txt /crontab.txt
-ADD entrypoint.sh /entrypoint.sh
+ADD cloudflare-ddns.sh crontab.txt entrypoint.sh /srv/
 
-# Give permissions and run cron
-RUN chmod 755 /cloudflare-ddns.sh /entrypoint.sh
-RUN /usr/bin/crontab /crontab.txt
+# Install cURL, give permissions and run cron
+RUN apk add --no-cache curl && \
+    chmod 755 /srv/cloudflare-ddns.sh /srv/entrypoint.sh && \
+    /usr/bin/crontab /srv/crontab.txt
 
-# Install curl
-RUN apk update && apk add curl
-
-CMD ["/entrypoint.sh"]
+CMD ["/srv/entrypoint.sh"]
