@@ -6,12 +6,14 @@
 ip=$(curl -s https://api.ipify.org)
 printf "[+] IPv4 address found: $ip\n"
 
+ttl="${TTL:-3600}"
+
 # Update the A record in CloudFlare
 curl -s -X PUT "https://api.cloudflare.com/client/v4/zones/"$ZONE_IDENTIFIER"/dns_records/"$DNS_RECORD \
      -H "X-Auth-Email: "$AUTH_EMAIL \
      -H "X-Auth-Key: "$AUTH_TOKEN \
      -H "Content-Type: application/json" \
-     --data '{"type":"A","name":"'"$DOMAIN"'","content":"'"$ip"'","ttl":3600,"proxied":'"$PROXIED"'}'
+     --data '{"type":"A","name":"'"$DOMAIN"'","content":"'"$ip"'","ttl":"'"$ttl"'","proxied":'"$PROXIED"'}'
 
 check_ipv6="${IPv6:-true}"
 
