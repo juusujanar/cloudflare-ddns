@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.9
 LABEL maintainer="janar@juusujanar.eu"
 
 # Add necessary files to the container

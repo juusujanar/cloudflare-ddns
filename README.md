@@ -8,7 +8,7 @@ Supports both IPv4 and IPv6, IPv6 can be turned off with the IPv6 variable. If y
 
 TTL is set to 1 hour.
 
-Container is based on Alpine Linux 3.8 and uses cURL to carry out the requests.
+Container is based on Alpine Linux 3.9 and uses cURL to carry out the requests.
 
 Latest image (janarj/cloudflare-ddns:latest) may contain test versions. Use versioned image for stability (janarj/cloudflare-ddns:1.1)
 
