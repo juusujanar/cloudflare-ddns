@@ -72,6 +72,11 @@ func GenerateConfig() bool {
 			IPv6: domain.IPv6,
 		}
 
+		// Let's default TTL to 1 aka CF Automatic.
+		if d.TTL == 0 {
+			d.TTL = 1
+		}
+
 		zone, err := GetZoneIdentifier(domain.Name)
 		if err {
 			log.Error("Zone not found, skipping domain " + domain.Name)

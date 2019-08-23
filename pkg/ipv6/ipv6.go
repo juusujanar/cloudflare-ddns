@@ -1,7 +1,6 @@
 package ipv6
 
 import (
-	"github.com/juusujanar/cloudflare-ddns/pkg/logging"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -23,7 +22,6 @@ func GetIPv6() (string, bool) {
 	}
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
-	logging.Info(string(body))
 	return string(body), ValidateIPv6(string(body))
 }
 

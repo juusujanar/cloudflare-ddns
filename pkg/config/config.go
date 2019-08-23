@@ -35,5 +35,11 @@ func ReadConfig() FileConfiguration {
 	if err != nil {
 		log.Fatal("Unable to decode configuration file, %v", err)
 	}
+	if len(config.Email) <= 3 {
+		log.Fatal("Email is too short or not configured.")
+	}
+	if len(config.ApiToken) <= 3 {
+		log.Fatal("API token is too short or not configured.")
+	}
 	return config
 }

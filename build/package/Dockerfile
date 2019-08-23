@@ -31,7 +31,6 @@ RUN dep ensure --vendor-only && \
 
 # Final stage: the running container.
 FROM scratch AS final
-LABEL maintainer="janar@juusujanar.eu"
 
 # Import the user and group files from the first stage.
 COPY --from=builder /user/group /user/passwd /etc/
