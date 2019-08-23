@@ -4,6 +4,7 @@ stages:
   - build
 
 build beta:
+  image: docker:19.03
   stage: build
   variables:
     DOCKER_CLI_EXPERIMENTAL: "enabled"
