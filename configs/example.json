@@ -1,0 +1,14 @@
+{
+	"ZoneIdentifier": "",
+	"DNSRecord": "",
+	"Domains": [
+		"example.com",
+		"www.example.com"
+	],
+	"Domain": "example.com",
+	"IPv6": true,
+	"TTL": 3600,
+	"Email": "admin@example.com",
+	"ApiToken": "aaBBccDDeeFF",
+	"Proxied": false
+}

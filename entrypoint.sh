@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # First run
-/srv/cloudflare-ddns.sh
+/srv/main
 
 # Start cron
 /usr/sbin/crond -f -l 8

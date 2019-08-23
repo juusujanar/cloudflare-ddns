@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.0] - Unreleased
+### Changed
+- Rewrote tool to Golang 1.12
+### Added
+- JSON configuration file support
+### In progress
+- Multiple domain support
+- Read Zone and DNS record identifiers from CloudFlare API
+- Create record if does not exist
+
 ## [1.2] - 2019-08-22
 ### Added
 - TTL can be configured via env variable.

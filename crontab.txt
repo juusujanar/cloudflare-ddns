@@ -1,1 +1,1 @@
-38 * * * * /srv/cloudflare-ddns.sh > /dev/stdout
+38 * * * * /srv/main > /dev/stdout

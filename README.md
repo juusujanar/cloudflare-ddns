@@ -6,7 +6,7 @@ DNS record(s) must be created beforehand, otherwise it's record ID is not availa
 
 Supports both IPv4 and IPv6, IPv6 can be turned off with the IPv6 variable. If you enable IPv6, you must also include IPv6_DNS_RECORD and your [Docker must have IPv6 connectivity](https://docs.docker.com/config/daemon/ipv6/).
 
-TTL can be set through an environment variable, but default is set to 1 hour.
+TTL can be set through an environment variable, but default is set to 1 hour. TTL 1 = CloudFlare automatic.
 
 Container is based on Alpine Linux 3.9 and uses cURL to carry out the requests.
 
