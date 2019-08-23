@@ -3,23 +3,24 @@ package config
 import (
 	"encoding/json"
 	"flag"
-	"log"
+	log "github.com/juusujanar/cloudflare-ddns/pkg/logging"
 	"os"
 )
 
-type Configuration struct {
-	ZoneIdentifier string
-	DNSRecord string
-	Domains []string
-	Domain string
-	IPv6 bool
-	TTL int
-	Email string
-	ApiToken string
-	Proxied bool
+type ConfiguredDomain struct {
+	Name 	string	`json:"name"`
+	TTL 	int		`json:"ttl"`
+	IPv6 	bool	`json:"ipv6"`
+	Proxied bool	`json:"proxied"`
 }
 
-func ReadConfig() Configuration {
+type FileConfiguration struct {
+	Domains 	[]ConfiguredDomain	`json:"domains"`
+	Email 		string				`json:"email"`
+	ApiToken 	string				`json:"token"`
+}
+
+func ReadConfig() FileConfiguration {
 	c := flag.String("c", "config.json", "Specify the configuration file.")
 	flag.Parse()
 	file, err := os.Open(*c)
@@ -28,11 +29,10 @@ func ReadConfig() Configuration {
 	}
 	defer file.Close()
 	decoder := json.NewDecoder(file)
-	Config := Configuration{}
-	err = decoder.Decode(&Config)
+	config := FileConfiguration{}
+	err = decoder.Decode(&config)
 	if err != nil {
 		log.Fatal("Can't decode config JSON: ", err)
 	}
-	log.Println(Config)
-	return Config
+	return config
 }

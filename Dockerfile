@@ -1,22 +1,49 @@
-FROM golang:1.12 as builder
-WORKDIR /go/src/github.com/juusujanar/cloudflare-ddns
+FROM golang:1.12-alpine as builder
+WORKDIR $GOPATH/src/github.com/juusujanar/cloudflare-ddns
 
-COPY . .
+# Install the Certificate-Authority certificates for the app to be able to make
+# calls to HTTPS endpoints.
+RUN apk add --no-cache ca-certificates git
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main ./cmd/cloudflare-ddns
+# Download and install the latest release of dep
+ADD https://github.com/golang/dep/releases/download/v0.5.4/dep-linux-amd64 /usr/bin/dep
+RUN chmod +x /usr/bin/dep
 
-FROM alpine:3.9
+# Create the user and group files that will be used in the running container to
+# run the process as an unprivileged user.
+RUN mkdir /user && \
+    echo 'nobody:x:65534:65534:nobody:/:' > /user/passwd && \
+    echo 'nobody:x:65534:' > /user/group
+
+# Set the environment variables for the go command:
+# * CGO_ENABLED=0 to build a statically-linked executable
+# * GOFLAGS=-mod=vendor to force `go build` to look into the `/vendor` folder.
+ENV CGO_ENABLED=0 GOOS=linux GOFLAGS=-mod=vendor
+
+COPY ./ ./
+
+# Build the executable to `/app`. Mark the build as statically linked.
+RUN dep ensure --vendor-only && \
+    go build \
+    -installsuffix 'static' \
+    -o /app ./cmd/cloudflare-ddns
+
+
+# Final stage: the running container.
+FROM scratch AS final
 LABEL maintainer="janar@juusujanar.eu"
 
-WORKDIR /srv
+# Import the user and group files from the first stage.
+COPY --from=builder /user/group /user/passwd /etc/
 
-# Add necessary files to the container
-COPY --from=builder /go/src/github.com/juusujanar/cloudflare-ddns/main .
-ADD crontab.txt entrypoint.sh /srv/
+# Import the Certificate-Authority certificates for enabling HTTPS.
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
-# Install cURL, give permissions and run cron
-RUN apk add --no-cache curl ca-certificates && \
-    chmod 755 /srv/main /srv/entrypoint.sh && \
-    /usr/bin/crontab /srv/crontab.txt
+# Import the compiled executable from the second stage.
+COPY --from=builder /app /app
 
-CMD ["/srv/entrypoint.sh"]
+# Perform any further action as an unprivileged user.
+USER 65534:65534
+
+# Run the compiled binary.
+ENTRYPOINT ["/app"]

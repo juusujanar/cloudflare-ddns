@@ -1,14 +1,23 @@
 # Changelog
 
 ## [2.0] - Unreleased
+**BREAKING CHANGE:** This release no longer uses environment variables. Create a JSON configuration file instead.
 ### Changed
 - Rewrote tool to Golang 1.12
+- Switch base image to scratch
+- Run Docker as non-root user
+- Use api6.ipify.org for IPv6
+  - Currently does not use HTTPS due to an issue
 ### Added
 - JSON configuration file support
-### In progress
-- Multiple domain support
-- Read Zone and DNS record identifiers from CloudFlare API
-- Create record if does not exist
+  - Multiple domain support
+  - Each domain now has individual TTL time & IPv6 and proxied flags
+- Pull Zone and DNS record identifiers from CloudFlare API
+  - No longer to fetch them manually beforehand
+- Create A/AAAA record if does not exist
+### Removed
+- Environmental variable support
+
 
 ## [1.2] - 2019-08-22
 ### Added

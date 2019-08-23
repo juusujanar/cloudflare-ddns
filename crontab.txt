@@ -1,1 +1,0 @@
-38 * * * * /srv/main > /dev/stdout

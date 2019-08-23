@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// GetIPv4 gets the IP from ipify.org, which only supports IPv4
+// GetIPv4 gets the IP from ipify.org, which only gives out IPv4
 func GetIPv4() (string, bool) {
 	resp, err := http.Get("https://api.ipify.org")
 	if err != nil {
