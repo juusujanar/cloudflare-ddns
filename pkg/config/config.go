@@ -1,38 +1,39 @@
 package config
 
 import (
-	"encoding/json"
-	"flag"
 	log "github.com/juusujanar/cloudflare-ddns/pkg/logging"
-	"os"
+	"github.com/spf13/viper"
 )
 
 type ConfiguredDomain struct {
-	Name 	string	`json:"name"`
-	TTL 	int		`json:"ttl"`
-	IPv6 	bool	`json:"ipv6"`
-	Proxied bool	`json:"proxied"`
+	Name 	string	`mapstructure:"name"`
+	TTL 	int		`mapstructure:"ttl"`
+	IPv6 	bool	`mapstructure:"ipv6"`
+	Proxied bool	`mapstructure:"proxied"`
 }
 
 type FileConfiguration struct {
-	Domains 	[]ConfiguredDomain	`json:"domains"`
-	Email 		string				`json:"email"`
-	ApiToken 	string				`json:"token"`
+	Domains 	[]ConfiguredDomain	`mapstructure:"domains"`
+	Email 		string				`mapstructure:"email"`
+	ApiToken 	string				`mapstructure:"token"`
 }
 
 func ReadConfig() FileConfiguration {
-	c := flag.String("c", "config.json", "Specify the configuration file.")
-	flag.Parse()
-	file, err := os.Open(*c)
-	if err != nil {
-		log.Fatal("Can't open config file: ", err)
+	viper.SetConfigName("config") // name of config file (without extension)
+	viper.AddConfigPath("/etc/cf-ddns/")   // path to look for the config file in
+	viper.AddConfigPath("$HOME/.cf-ddns")  // call multiple times to add many search paths
+	viper.AddConfigPath(".")               // optionally look for config in the working directory
+	if err := viper.ReadInConfig(); err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			log.Fatal("Config file not found.")
+		} else {
+			log.Fatal("Config file parsing failed.")
+		}
 	}
-	defer file.Close()
-	decoder := json.NewDecoder(file)
 	config := FileConfiguration{}
-	err = decoder.Decode(&config)
+	err := viper.Unmarshal(&config)
 	if err != nil {
-		log.Fatal("Can't decode config JSON: ", err)
+		log.Fatal("Unable to decode configuration file, %v", err)
 	}
 	return config
 }
