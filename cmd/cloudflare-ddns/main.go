@@ -16,7 +16,6 @@ func main() {
 	// Check IPs immediately
 	checkIPs()
 	c := cron.New()
-	_, _ = c.AddFunc("@every 1m", checkIPs)
 	// Run after every 1 hour
 	_, _ = c.AddFunc("@every 1h", checkIPs)
 	c.Run()
