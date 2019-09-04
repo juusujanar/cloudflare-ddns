@@ -9,7 +9,7 @@ If you enable IPv6 and run the Docker container, your
 [Docker must have IPv6 connectivity](https://docs.docker.com/config/daemon/ipv6/).
 Do take note IPv6 address might be different for the container and the service you want to access.
 
-App is built using Golang 1.12 and final Docker container is based on Scratch.
+App is built using Golang 1.13 and final Docker container is based on Scratch.
 
 Latest image (janarj/cloudflare-ddns:latest) may contain unstable versions.
 Use versioned image tags for stable releases (janarj/cloudflare-ddns:1.1)

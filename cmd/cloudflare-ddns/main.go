@@ -1,11 +1,12 @@
 package main
 
 import (
+	"github.com/robfig/cron"
+
 	"github.com/juusujanar/cloudflare-ddns/pkg/cloudflare"
 	"github.com/juusujanar/cloudflare-ddns/pkg/ipv4"
 	"github.com/juusujanar/cloudflare-ddns/pkg/ipv6"
 	log "github.com/juusujanar/cloudflare-ddns/pkg/logging"
-	"github.com/robfig/cron"
 )
 
 var hasIpv6 bool
@@ -17,7 +18,7 @@ func main() {
 	checkIPs()
 	c := cron.New()
 	// Run after every 1 hour
-	_, _ = c.AddFunc("@every 1h", checkIPs)
+	_ = c.AddFunc("@every 1h", checkIPs)
 	c.Run()
 }
 

@@ -1,8 +1,9 @@
 package config
 
 import (
-	log "github.com/juusujanar/cloudflare-ddns/pkg/logging"
 	"github.com/spf13/viper"
+
+	log "github.com/juusujanar/cloudflare-ddns/pkg/logging"
 )
 
 type ConfiguredDomain struct {

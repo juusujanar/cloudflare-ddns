@@ -2,10 +2,11 @@ package cloudflare
 
 import (
 	"encoding/json"
-	log "github.com/juusujanar/cloudflare-ddns/pkg/logging"
 	"io/ioutil"
 	"net/http"
 	"regexp"
+
+	log "github.com/juusujanar/cloudflare-ddns/pkg/logging"
 )
 
 // GetZoneIdentifier pulls domain Zone Identifier from CloudFlare API

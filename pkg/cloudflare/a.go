@@ -3,9 +3,10 @@ package cloudflare
 import (
 	"bytes"
 	"encoding/json"
-	log "github.com/juusujanar/cloudflare-ddns/pkg/logging"
 	"io/ioutil"
 	"net/http"
+
+	log "github.com/juusujanar/cloudflare-ddns/pkg/logging"
 )
 
 func UpdateARecords(ip string) {
@@ -35,6 +36,8 @@ func UpdateARecords(ip string) {
 			req.Header.Set("X-Auth-Email", Config.Email)
 			req.Header.Set("X-Auth-Key", Config.ApiToken)
 			req.Header.Set("Content-Type", "application/json")
+
+			req.Close = true
 
 			response, err := client.Do(req)
 			if err != nil {

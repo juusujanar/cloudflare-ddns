@@ -1,8 +1,9 @@
 package logging
 
 import (
-	"github.com/sirupsen/logrus"
 	"os"
+
+	"github.com/sirupsen/logrus"
 )
 
 // Create a new instance of the logger. You can have any number of instances.

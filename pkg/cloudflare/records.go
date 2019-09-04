@@ -2,9 +2,10 @@ package cloudflare
 
 import (
 	"encoding/json"
-	log "github.com/juusujanar/cloudflare-ddns/pkg/logging"
 	"io/ioutil"
 	"net/http"
+
+	log "github.com/juusujanar/cloudflare-ddns/pkg/logging"
 )
 
 // GetADNSRecordIdentifier pulls domain's A (IPv4) DNS Record Identifier from CloudFlare API
