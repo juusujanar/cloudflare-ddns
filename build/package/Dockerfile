@@ -1,13 +1,9 @@
-FROM golang:1.12-alpine as builder
-WORKDIR $GOPATH/src/github.com/juusujanar/cloudflare-ddns
+FROM golang:1.13-alpine as builder
+WORKDIR /src/github.com/juusujanar/cloudflare-ddns
 
 # Install the Certificate-Authority certificates for the app to be able to make
 # calls to HTTPS endpoints.
 RUN apk add --no-cache ca-certificates git
-
-# Download and install the latest release of dep
-ADD https://github.com/golang/dep/releases/download/v0.5.4/dep-linux-amd64 /usr/bin/dep
-RUN chmod +x /usr/bin/dep
 
 # Create the user and group files that will be used in the running container to
 # run the process as an unprivileged user.
@@ -17,17 +13,12 @@ RUN mkdir /user && \
 
 # Set the environment variables for the go command:
 # * CGO_ENABLED=0 to build a statically-linked executable
-# * GOFLAGS=-mod=vendor to force `go build` to look into the `/vendor` folder.
-ENV CGO_ENABLED=0 GOOS=linux GOFLAGS=-mod=vendor
+ENV CGO_ENABLED=0 GOOS=linux
 
 COPY ./ ./
 
 # Build the executable to `/app`. Mark the build as statically linked.
-RUN dep ensure --vendor-only && \
-    go build \
-    -installsuffix 'static' \
-    -o /app ./cmd/cloudflare-ddns
-
+RUN go build -o /app ./cmd/cloudflare-ddns
 
 # Final stage: the running container.
 FROM scratch AS final
