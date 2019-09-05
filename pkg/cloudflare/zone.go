@@ -2,9 +2,10 @@ package cloudflare
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
 	"regexp"
+
+	"github.com/sirupsen/logrus"
 
 	log "github.com/juusujanar/cloudflare-ddns/pkg/logging"
 )
@@ -19,35 +20,38 @@ func GetZoneIdentifier(domain string) (string, bool) {
 	dest := "https://api.cloudflare.com/client/v4/zones?name=" + match
 	req, err := http.NewRequest(http.MethodGet, dest, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Error("GetZoneIdentifier: Request preparing failed.")
+		log.Error(err)
+		return "", true
 	}
 
 	req.Header.Set("X-Auth-Email", Config.Email)
 	req.Header.Set("X-Auth-Key", Config.ApiToken)
 	req.Header.Set("Content-Type", "application/json")
+	req.Close = true
 
 	response, err := client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		log.Error("GetZoneIdentifier: Request failed.")
+		log.Error(err)
+		return "", true
 	}
 
 	defer response.Body.Close()
 
 	res := CFMultiResultResponse{}
-	body, err := ioutil.ReadAll(response.Body)
+	decoder := json.NewDecoder(response.Body)
+	err = decoder.Decode(&res)
 	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = json.Unmarshal(body, &res)
-	if err != nil {
-		log.Fatal(err)
+		log.Error("GetZoneIdentifier: Response parsing failed.")
+		log.Error(err)
+		return "", true
 	}
 
 	if len(res.Result) == 0 {
 		return "", true
 	} else if len(res.Result) != 1 {
-		log.Error("Multiple zones were found: " + string(body))
+		log.WithFields(logrus.Fields{"response": res}).Error("Multiple records were found.")
 		return "", true
 	} else {
 		return res.Result[0].Id, false

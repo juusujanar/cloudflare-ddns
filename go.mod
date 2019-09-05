@@ -1,6 +1,6 @@
 module github.com/juusujanar/cloudflare-ddns
 
-go 1.12
+go 1.13
 
 require (
 	github.com/robfig/cron v1.2.0

@@ -33,3 +33,7 @@ func Error(args ...interface{}) {
 func Fatal(args ...interface{}) {
 	log.Fatal(args...)
 }
+
+func WithFields(fields logrus.Fields) *logrus.Entry {
+	return log.WithFields(fields)
+}

@@ -2,8 +2,9 @@ package cloudflare
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
+
+	"github.com/sirupsen/logrus"
 
 	log "github.com/juusujanar/cloudflare-ddns/pkg/logging"
 )
@@ -14,32 +15,35 @@ func GetADNSRecordIdentifier(zoneIdentifier string, domain string) (string, bool
 	dest := "https://api.cloudflare.com/client/v4/zones/" + zoneIdentifier + "/dns_records?type=A&name=" + domain
 	req, err := http.NewRequest(http.MethodGet, dest, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Error("Request preparing failed.")
+		return "", true
 	}
 
 	req.Header.Set("X-Auth-Email", Config.Email)
 	req.Header.Set("X-Auth-Key", Config.ApiToken)
 	req.Header.Set("Content-Type", "application/json")
+	req.Close = true
 
 	response, err := client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		log.Error("GetADNSRecordIdentifier: Request failed.")
+		return "", true
 	}
 
 	defer response.Body.Close()
 
 	res := CFMultiResultResponse{}
-	body, err := ioutil.ReadAll(response.Body)
-
-	err = json.Unmarshal(body, &res)
+	decoder := json.NewDecoder(response.Body)
+	err = decoder.Decode(&res)
 	if err != nil {
-		log.Fatal(err)
+		log.Error("GetAAAADNSRecordIdentifier: Response parsing failed.")
+		return "", true
 	}
 
 	if len(res.Result) == 0 {
 		return "", true
 	} else if len(res.Result) != 1 {
-		log.Error("Multiple records were found: " + string(body))
+		log.WithFields(logrus.Fields{"response": res}).Error("Multiple records were found.")
 		return "", true
 	} else {
 		return res.Result[0].Id, false
@@ -52,32 +56,35 @@ func GetAAAADNSRecordIdentifier(zoneIdentifier string, domain string) (string, b
 	dest := "https://api.cloudflare.com/client/v4/zones/" + zoneIdentifier + "/dns_records?type=AAAA&name=" + domain
 	req, err := http.NewRequest(http.MethodGet, dest, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Error("Request preparing failed.")
+		return "", true
 	}
 
 	req.Header.Set("X-Auth-Email", Config.Email)
 	req.Header.Set("X-Auth-Key", Config.ApiToken)
 	req.Header.Set("Content-Type", "application/json")
+	req.Close = true
 
 	response, err := client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		log.Error("GetAAAADNSRecordIdentifier: Request failed.")
+		return "", true
 	}
 
 	defer response.Body.Close()
 
 	res := CFMultiResultResponse{}
-	body, err := ioutil.ReadAll(response.Body)
-
-	err = json.Unmarshal(body, &res)
+	decoder := json.NewDecoder(response.Body)
+	err = decoder.Decode(&res)
 	if err != nil {
-		log.Fatal(err)
+		log.Error("GetAAAADNSRecordIdentifier: Response parsing failed.")
+		return "", true
 	}
 
 	if len(res.Result) == 0 {
 		return "", true
 	} else if len(res.Result) != 1 {
-		log.Error("Multiple records were found: " + string(body))
+		log.WithFields(logrus.Fields{"response": res}).Error("Multiple records were found.")
 		return "", true
 	} else {
 		return res.Result[0].Id, false

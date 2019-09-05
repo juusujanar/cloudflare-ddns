@@ -3,7 +3,6 @@ package cloudflare
 import (
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
 
 	log "github.com/juusujanar/cloudflare-ddns/pkg/logging"
@@ -41,18 +40,15 @@ func UpdateARecords(ip string) {
 
 			response, err := client.Do(req)
 			if err != nil {
-				log.Fatal(err)
-			}
-
-			body, err = ioutil.ReadAll(response.Body)
-			if err != nil {
-				log.Fatal(err)
+				log.Error("Failed to update A DNS record.")
+				continue
 			}
 
 			res := CFSingleResultResponse{}
-			err = json.Unmarshal(body, &res)
+			decoder := json.NewDecoder(response.Body)
+			err = decoder.Decode(&res)
 			if err != nil {
-				log.Fatal(err)
+				log.Error("Failed to parse the result.")
 			}
 			if res.Success {
 				log.Info("A Record update successful for domain " + domain.Name)
@@ -86,20 +82,19 @@ func UpdateARecords(ip string) {
 			req.Header.Set("X-Auth-Key", Config.ApiToken)
 			req.Header.Set("Content-Type", "application/json")
 
+			req.Close = true
+
 			response, err := client.Do(req)
 			if err != nil {
-				log.Fatal(err)
-			}
-
-			body, err = ioutil.ReadAll(response.Body)
-			if err != nil {
-				log.Fatal(err)
+				log.Error("Failed to create A DNS record.")
+				continue
 			}
 
 			res := CFSingleResultResponse{}
-			err = json.Unmarshal(body, &res)
+			decoder := json.NewDecoder(response.Body)
+			err = decoder.Decode(&res)
 			if err != nil {
-				log.Fatal(err)
+				log.Error("Failed to parse the result.")
 			}
 			if res.Success {
 				domain.ARecordIdentifier = res.Result.Id
@@ -111,4 +106,5 @@ func UpdateARecords(ip string) {
 			response.Body.Close()
 		}
 	}
+	client.CloseIdleConnections()
 }
