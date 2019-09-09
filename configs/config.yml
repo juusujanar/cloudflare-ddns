@@ -1,0 +1,15 @@
+domains:
+  - name: example.com
+    ttl: 3600
+    ipv6: true
+    proxied: false
+  - name: vpn.anotherdomain.com
+    ttl: 3600
+    ipv6: true
+    proxied: false
+  - name: testing.co.uk
+    ttl: 3600
+    ipv6: false
+    proxied: false
+email: webmaster@example.com
+token: YCdA2ZnhQcp4K9uqWwVEHlyVe

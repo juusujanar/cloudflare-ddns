@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.0] - 2019-09-09
+**BREAKING CHANGE:** This release no longer uses environment variables. Create a configuration file instead.
+### Changed
+- Rewrote tool to Golang 1.13 (with go modules)
+- Switch base image to scratch
+- Run Docker as non-root user
+- Use api6.ipify.org for IPv6
+  - Currently does not use HTTPS
+### Added
+- JSON/YAML/TOML configuration file support
+  - Multiple domain support
+  - Each domain now has individual TTL time & IPv6 and proxied flags
+- Pull Zone and DNS record identifiers from CloudFlare API
+  - No longer to fetch them manually beforehand
+- Create A/AAAA record if does not exist
+### Removed
+- Environmental variable support
+
+
 ## [1.2] - 2019-08-22
 ### Added
 - TTL can be configured via env variable.

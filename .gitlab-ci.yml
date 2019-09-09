@@ -1,0 +1,19 @@
+image: docker:19.03-dind
+
+stages:
+  - build
+
+build beta:
+  image: docker:19.03
+  stage: build
+  variables:
+    DOCKER_CLI_EXPERIMENTAL: "enabled"
+  services:
+    - name: docker:19.03-dind
+      command: ["--experimental"]
+  script:
+    - docker buildx create --name cf-test
+    - docker buildx use cf-test
+    - docker buildx inspect --bootstrap
+    - echo $DOCKER_KEY | docker login --username janarj --password-stdin
+    - docker buildx build --platform linux/arm64,linux/arm/v7,linux/amd64 -t janarj/cloudflare-ddns:beta --push -f build/package/Dockerfile .
