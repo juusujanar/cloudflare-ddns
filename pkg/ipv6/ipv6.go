@@ -22,6 +22,7 @@ func GetIPv6() (string, bool) {
 	resp, err := http.Get("http://[" + ip.String() + "]")
 	if err != nil {
 		log.Error("Could not get IPv6 address.")
+		return "", false
 	} else {
 		defer resp.Body.Close()
 		body, _ := ioutil.ReadAll(resp.Body)
