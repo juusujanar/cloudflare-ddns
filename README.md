@@ -12,7 +12,9 @@ Do take note IPv6 address might be different for the container and the service y
 App is built using Golang 1.13 and final Docker container is based on Scratch.
 
 Latest image (janarj/cloudflare-ddns:latest) may contain unstable versions.
-Use versioned image tags for stable releases (janarj/cloudflare-ddns:1.1)
+Use versioned image tags for stable releases (janarj/cloudflare-ddns:2.0)
+
+Versions 1.x are no longer supported (previously made in Bash and ran on Alpine).
 
 
 ## How to use
@@ -34,9 +36,7 @@ Detailed information is below.
 ```
 
 ### Or if you want to build it yourself:
-- Have [dep](https://github.com/golang/dep) available
-- `dep ensure`
-- `go build     -installsuffix 'static'     -o ./app ./cmd/cloudflare-ddns`
+- `go build -o ./app ./cmd/cloudflare-ddns`
 - Run the app binary with `./app`.
 
 ## Configuration
