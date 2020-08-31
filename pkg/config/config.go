@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
 	log "github.com/juusujanar/cloudflare-ddns/pkg/logging"
@@ -28,13 +29,13 @@ func ReadConfig() FileConfiguration {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 			log.Fatal("Config file not found.")
 		} else {
-			log.Fatal("Config file parsing failed.")
+			log.WithFields(logrus.Fields{"error": err}).Fatal("Config file parsing failed.")
 		}
 	}
 	config := FileConfiguration{}
 	err := viper.Unmarshal(&config)
 	if err != nil {
-		log.Fatal("Unable to decode configuration file, %v", err)
+		log.WithFields(logrus.Fields{"error": err}).Error("Unable to decode configuration file")
 	}
 	if len(config.Email) <= 3 {
 		log.Fatal("Email is too short or not configured.")
