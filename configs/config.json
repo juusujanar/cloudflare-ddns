@@ -16,5 +16,10 @@
 		"proxied": false
 	}],
 	"email": "webmaster@example.com",
-	"token": "YCdA2ZnhQcp4K9uqWwVEHlyVe"
+	"token": "YCdA2ZnhQcp4K9uqWwVEHlyVe",
+	"sources": {
+		"ipify.org": true,
+		"myip.com": true,
+		"my-ip.io": true
+	}
 }
