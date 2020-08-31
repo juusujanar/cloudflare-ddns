@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/robfig/cron"
+	"github.com/robfig/cron/v3"
+	"github.com/sirupsen/logrus"
 
 	"github.com/juusujanar/cloudflare-ddns/pkg/cloudflare"
 	"github.com/juusujanar/cloudflare-ddns/pkg/ipv4"
@@ -18,7 +19,10 @@ func main() {
 	checkIPs()
 	c := cron.New()
 	// Run after every 1 hour
-	_ = c.AddFunc("@every 1h", checkIPs)
+	_, err := c.AddFunc("@every 1h", checkIPs)
+	if err != nil {
+		log.WithFields(logrus.Fields{"error": err}).Error("Failed to add cron function")
+	}
 	c.Run()
 }
 

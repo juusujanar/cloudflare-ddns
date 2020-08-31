@@ -1,4 +1,4 @@
-FROM golang:1.13-alpine as builder
+FROM golang:1.15-alpine3.12 as builder
 WORKDIR /src/github.com/juusujanar/cloudflare-ddns
 
 # Install the Certificate-Authority certificates for the app to be able to make
