@@ -43,8 +43,10 @@ Detailed information is below.
 
 ## Configuration
 
-### CloudFlare API token
-To get CloudFlare API token, log in to CloudFlare dashboard, go to your profile, view Global API key.
+### CloudFlare API token and ZoneID
+**Global API Token:** To get CloudFlare API token, log in to CloudFlare dashboard, go to your profile, view Global API key.
+**ZoneID:** To get the CLoudFlare Zone token, log in to CloudFlare dashboard, select your website, then on the Dashboard scroll down and your Zone ID will be on the right.
+
 It must be included as well as email or the program will error out immediately.
 
 ### Domains
